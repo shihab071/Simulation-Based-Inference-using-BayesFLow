@@ -1,0 +1,153 @@
+{
+  "software": {
+    "python_backend": "jax",
+    "keras_version": "3.15.0",
+    "bayesflow_version": "2.0.12"
+  },
+  "seed": 2026,
+  "simulator": {
+    "dt": 0.002,
+    "noise_sd": 1.0,
+    "double_response_window": 0.25,
+    "max_time": 2.5,
+    "minimum_retained_rt": 0.25
+  },
+  "priors": {
+    "v_A": {
+      "distribution": "truncated normal",
+      "mean": 3.0,
+      "sd": 1.5,
+      "lower": 0.05
+    },
+    "v_B": {
+      "distribution": "truncated normal",
+      "mean": 1.5,
+      "sd": 1.0,
+      "lower": 0.05
+    },
+    "beta": {
+      "distribution": "truncated normal",
+      "mean": 3.0,
+      "sd": 1.5,
+      "lower": 0.0
+    },
+    "b": {
+      "distribution": "truncated normal",
+      "mean": 1.4,
+      "sd": 0.4,
+      "lower": 0.3
+    },
+    "t0": {
+      "distribution": "truncated normal",
+      "mean": 0.3,
+      "sd": 0.15,
+      "lower": 0.05,
+      "upper": 0.6
+    }
+  },
+  "training": {
+    "epochs": 40,
+    "batch_size": 4,
+    "batches_per_epoch": 400,
+    "total_optimizer_updates": 16000,
+    "total_simulated_datasets": 64000,
+    "n_trials_options": [
+      500,
+      1000,
+      2500,
+      5000,
+      10000
+    ],
+    "n_trials_weights": [
+      0.3,
+      0.25,
+      0.2,
+      0.15,
+      0.1
+    ]
+  },
+  "validation": {
+    "datasets": 200,
+    "trials_per_dataset": 10000,
+    "posterior_samples_per_dataset": 500,
+    "sampling_batch_size": 2
+  },
+  "set_transformer": {
+    "name": "set_transformer",
+    "summary_dim": 10,
+    "embed_dims": [
+      64,
+      64
+    ],
+    "num_heads": [
+      4,
+      4
+    ],
+    "num_seeds": 4,
+    "dropout": 0.05,
+    "expansion_factor": 4.0,
+    "glu_variant": "swiglu",
+    "kernel_initializer": "glorot_uniform",
+    "use_bias": false,
+    "layer_norm": true,
+    "num_inducing_points": 32,
+    "seed_dim": null,
+    "trainable": true,
+    "dtype": {
+      "module": "keras",
+      "class_name": "DTypePolicy",
+      "config": {
+        "name": "float32"
+      },
+      "registered_name": null
+    }
+  },
+  "coupling_flow": {
+    "name": "coupling_flow",
+    "trainable": true,
+    "dtype": {
+      "module": "keras",
+      "class_name": "DTypePolicy",
+      "config": {
+        "name": "float32"
+      },
+      "registered_name": null
+    },
+    "subnet": "mlp",
+    "depth": 6,
+    "transform": "spline",
+    "permutation": "random",
+    "use_actnorm": true,
+    "base_distribution": {
+      "module": "bayesflow.distributions.diagonal_normal",
+      "class_name": "DiagonalNormal",
+      "config": {
+        "name": "diagonal_normal",
+        "trainable": true,
+        "dtype": {
+          "module": "keras",
+          "class_name": "DTypePolicy",
+          "config": {
+            "name": "float32"
+          },
+          "registered_name": null
+        },
+        "mean": 0.0,
+        "std": 1.0,
+        "trainable_parameters": false,
+        "seed_generator": {
+          "module": "keras.random",
+          "class_name": "SeedGenerator",
+          "config": {
+            "seed": null,
+            "name": "seed_generator_6"
+          },
+          "registered_name": null
+        }
+      },
+      "registered_name": "bayesflow.distributions>DiagonalNormal"
+    },
+    "subnet_kwargs": null,
+    "transform_kwargs": null
+  }
+}
